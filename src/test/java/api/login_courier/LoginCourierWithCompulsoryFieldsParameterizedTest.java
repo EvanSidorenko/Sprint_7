@@ -1,4 +1,4 @@
-package api.loginCourier;
+package api.login_courier;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;

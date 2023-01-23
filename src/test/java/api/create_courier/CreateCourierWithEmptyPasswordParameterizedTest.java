@@ -1,16 +1,13 @@
-package api.createCourier;
+package api.create_courier;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.example.Client;
-import org.example.Courier;
-import org.example.CourierClient;
-import org.example.CourierGenerator;
+import org.example.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -51,6 +48,17 @@ public class CreateCourierWithEmptyPasswordParameterizedTest {
         assertEquals(expectedStatusCode, actualStatusCode);
         assertEquals(actualBodyMessage, expectedBodyMessage);
 
+        if (actualStatusCode == SC_CREATED) {
+            System.out.println("This message appears when creating a courier with a bug is successful");
+            ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
+
+            int id = loginResponse.extract().path("id");
+
+            // Delete courier after test is completed
+
+            courierClient.deleteCourier(id);
+
+        }
     }
 
 }

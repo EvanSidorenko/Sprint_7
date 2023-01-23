@@ -1,4 +1,4 @@
-package api.createCourier;
+package api.create_courier;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
@@ -7,6 +7,7 @@ import org.example.CourierClient;
 import org.example.CourierCredentials;
 import org.example.CourierGenerator;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.apache.http.HttpStatus.SC_CONFLICT;
@@ -61,7 +62,7 @@ public class CreateCourierTests {
         boolean isTrue = response.extract().path("ok");
 
 
-        assertEquals(true, isTrue);
+        Assert.assertTrue("Check if ok contains true", isTrue);
 
     }
 

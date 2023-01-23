@@ -1,13 +1,10 @@
-package api.getOrderList;
+package api.get_order_list;
 
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.example.CourierCredentials;
 import org.example.OrderClient;
 import org.junit.Test;
-
 import java.util.ArrayList;
-
 import static org.hamcrest.Matchers.equalTo;
 
 public class GetOrderList {
