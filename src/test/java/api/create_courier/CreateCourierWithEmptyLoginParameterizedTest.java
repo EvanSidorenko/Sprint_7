@@ -42,24 +42,22 @@ public class CreateCourierWithEmptyLoginParameterizedTest {
         int actualStatusCode = response.extract().statusCode();
         String actualBodyMessage = response.extract().path("message");
 
-        System.out.println(actualBodyMessage);
-        System.out.println(actualStatusCode);
+        if (actualStatusCode == SC_CREATED) {
+            System.out.println("This message appears when creating a courier with a bug is successful");
+            ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
+
+            int id = loginResponse.extract().path("id");
+
+            // Delete courier after test with a bug is completed
+
+            courierClient.deleteCourier(id);
+
+        }
 
         assertEquals(expectedStatusCode, actualStatusCode);
         assertEquals(expectedBodyMessage, actualBodyMessage);
 
-       if (actualStatusCode == SC_CREATED) {
-           System.out.println("This message appears when creating a courier with a bug is successful");
-           ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
-
-           int id = loginResponse.extract().path("id");
-
-           // Delete courier after test is completed
-
-           courierClient.deleteCourier(id);
-
-       }
-
     }
+
 
 }

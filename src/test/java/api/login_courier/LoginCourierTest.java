@@ -6,8 +6,8 @@ import org.example.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.apache.http.HttpStatus.SC_NOT_FOUND;
-import static org.apache.http.HttpStatus.SC_OK;
+
+import static org.apache.http.HttpStatus.*;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
@@ -32,26 +32,35 @@ public class LoginCourierTest {
         int statusCode = loginResponse.extract().statusCode();
         assertEquals(SC_OK, statusCode);
     }
+
     @Test
     @DisplayName("Check there is 404 error when log in with wrong login")
     public void check404ErrorOccuresWhenLogInWithWrongLogin() {
-            CourierClient courierClient = new CourierClient();
-            Client client = new Client();
-            ValidatableResponse response = courierClient.createCourier(courier);
-            courier.setLogin("wrongLog!@#");
-            ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
+        CourierClient courierClient = new CourierClient();
+        Client client = new Client();
+        ValidatableResponse response = courierClient.createCourier(courier);
+        courier.setLogin("wrongLog!@#");
+        ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
 
-            int actualStatusCode = loginResponse.extract().statusCode();
-            String expectedMessage = client.getError404Message();
-            String actualMessage = loginResponse.extract().path("message");
+        int actualStatusCode = loginResponse.extract().statusCode();
+        String expectedMessage = client.getError404Message();
+        String actualMessage = loginResponse.extract().path("message");
 
-            System.out.println(actualStatusCode);
-            System.out.println(actualMessage);
+        if (actualStatusCode == SC_OK) {
+            System.out.println("This message appears when log in a courier with a bug is successful");
 
-            assertEquals(SC_NOT_FOUND, actualStatusCode);
-            assertEquals(expectedMessage, actualMessage);
+            int id = loginResponse.extract().path("id");
+
+            // Delete courier after test with a bug is completed
+
+            courierClient.deleteCourier(id);
 
         }
+
+        assertEquals(SC_NOT_FOUND, actualStatusCode);
+        assertEquals(expectedMessage, actualMessage);
+
+    }
 
     @Test
     @DisplayName("Check there is 404 error when log in with wrong password")
@@ -62,11 +71,22 @@ public class LoginCourierTest {
         ValidatableResponse loginResponse = courierClient.loginCourier(CourierCredentials.from(courier));
 
         int actualStatusCode = loginResponse.extract().statusCode();
-        System.out.println(actualStatusCode);
+
+        if (actualStatusCode == SC_OK) {
+            System.out.println("This message appears when log in a courier with a bug is successful");
+
+            int id = loginResponse.extract().path("id");
+
+            // Delete courier after test with a bug is completed
+
+            courierClient.deleteCourier(id);
+
+        }
 
         assertEquals(SC_NOT_FOUND, actualStatusCode);
 
     }
+
     @Test
     @DisplayName("Check there is 404 Error when log in with non existing courier")
     public void check404ErrorOccuresWhenLogInWithNonExistingCourier() {
@@ -79,14 +99,21 @@ public class LoginCourierTest {
         String actualMessage = loginResponse.extract().path("message");
         int actualStatusCode = loginResponse.extract().statusCode();
 
+        if (actualStatusCode == SC_OK) {
+            System.out.println("This message appears when log in a courier with a bug is successful");
 
-        System.out.println(actualStatusCode);
-        System.out.println(actualMessage);
+            int id = loginResponse.extract().path("id");
 
+            // Delete courier after test is completed
+
+            courierClient.deleteCourier(id);
+
+        }
         assertEquals(SC_NOT_FOUND, actualStatusCode);
         assertEquals(expectedMessage, actualMessage);
 
     }
+
     @Test
     @DisplayName("Check a successful login returns courier id")
     public void checkSuccessfulLoginReturnsCourierId() {
@@ -104,7 +131,7 @@ public class LoginCourierTest {
 
     @After
     public void cleanUp() {
-        if ( courierId > 0) {
+        if (courierId > 0) {
             courierClient.deleteCourier(courierId);
         }
     }

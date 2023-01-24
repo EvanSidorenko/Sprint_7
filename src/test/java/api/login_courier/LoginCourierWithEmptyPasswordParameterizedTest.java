@@ -43,11 +43,6 @@ public class LoginCourierWithEmptyPasswordParameterizedTest {
         int actualStatusCode = loginResponse.extract().statusCode();
         String actualBodyMessage = loginResponse.extract().path("message");
 
-        System.out.println(actualBodyMessage);
-        System.out.println(actualStatusCode);
-
-        assertEquals(expectedStatusCode, actualStatusCode);
-        assertEquals(expectedBodyMessage, actualBodyMessage);
 
         if (actualStatusCode == SC_OK) {
             System.out.println("This message appears when log in a courier with a bug is successful");
@@ -59,6 +54,10 @@ public class LoginCourierWithEmptyPasswordParameterizedTest {
             courierClient.deleteCourier(id);
 
         }
+
+        assertEquals(expectedStatusCode, actualStatusCode);
+        assertEquals(expectedBodyMessage, actualBodyMessage);
+
     }
 
 }

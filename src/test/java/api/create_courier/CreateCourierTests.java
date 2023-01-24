@@ -37,6 +37,7 @@ public class CreateCourierTests {
         assertEquals(SC_CREATED, statusCode);
 
     }
+
     @Test
     @DisplayName("Check there is status 409 Conflict when creating same couriers")
     public void sameCouriersCannotBeCreated() {
@@ -65,7 +66,6 @@ public class CreateCourierTests {
         Assert.assertTrue("Check if ok contains true", isTrue);
 
     }
-
 
     @After
     public void cleanUp() {

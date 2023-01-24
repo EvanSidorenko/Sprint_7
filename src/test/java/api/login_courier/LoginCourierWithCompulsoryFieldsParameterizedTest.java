@@ -41,8 +41,6 @@ public class LoginCourierWithCompulsoryFieldsParameterizedTest {
 
         int actualStatusCode = loginResponse.extract().statusCode();
 
-        System.out.println(actualStatusCode);
-
         int courierId = loginResponse.extract().path("id");
 
         assertEquals(expectedStatusCode, actualStatusCode);

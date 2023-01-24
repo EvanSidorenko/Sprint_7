@@ -44,9 +44,6 @@ public class CreateCourierWithCompulsoryFieldsParameterizedTest {
         int actualStatusCode = response.extract().statusCode();
         boolean actualBody = response.extract().path("ok");
 
-        System.out.println(actualBody);
-        System.out.println(actualStatusCode);
-
         int id = loginResponse.extract().path("id");
 
         assertEquals(expectedStatusCode, actualStatusCode);
